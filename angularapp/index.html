@@ -1,0 +1,236 @@
+<html>
+   
+    <head>
+        <title>JulKalendar 2020</title>
+
+        <style>
+            
+            :root {
+                --door-height: 200px;
+            }
+            
+            body {
+                background: url('https://w.wallhaven.cc/full/48/wallhaven-48rvoo.jpg');
+                background-size: cover;
+            }
+
+            .door {
+                width: var(--door-height);
+                height: var(--door-height);
+                float: left;
+                position: relative;
+                color: white;
+                border: 2px dashed white;
+                text-align: center;
+                line-height: var(--door-height);
+                margin: 40px;
+                font-size: 40px;
+                -webkit-touch-callout: none; /* iOS Safari */
+                -webkit-user-select: none; /* Safari */
+                -khtml-user-select: none; /* Konqueror HTML */
+                -moz-user-select: none; /* Old versions of Firefox */
+                -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+                -webkit-box-shadow: 0px 0px 26px 0px rgba(255,255,255,1);
+                -moz-box-shadow: 0px 0px 26px 0px rgba(255,255,255,1);
+                box-shadow: 0px 0px 26px 0px rgba(255,255,255,1);
+            }
+
+            .door>div {
+                position:absolute;
+                top: 0px;
+                left: 0px;
+                right: 0px;
+                bottom: 0px;
+            }
+
+            .door>.overlay {
+                z-index: 99;
+                background-color: red;
+            }
+
+            .door>.overlay:hover {
+                background-color: palevioletred;
+            }
+
+            .door.open:not(.no-animation)>.overlay {
+                -webkit-animation: open 1s linear forwards;
+                animation: open 1s linear forwards;
+            }
+
+            .door.open.no-animation>.overlay  {
+                -webkit-transform: perspective(300) rotateY(-90deg);
+                -webkit-transform-origin: 0% 50%;
+                transform: perspective(300) rotateY(-90deg);
+                transform-origin: 0% 50%;
+            }
+
+
+            .door>.content {
+                background-color: rgb(204, 204, 204);
+                z-index: 0;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            @keyframes open {
+                from {
+                    -webkit-transform: perspective(300) rotateY(0deg);
+                    -webkit-transform-origin: 0% 50%;
+                    transform: perspective(300) rotateY(0deg);
+                    transform-origin: 0% 50%;
+                }
+                to {
+                    -webkit-transform: perspective(300) rotateY(-90deg);
+                    -webkit-transform-origin: 0% 50%;
+                    transform: perspective(300) rotateY(-90deg);
+                    transform-origin: 0% 50%;
+                }
+            }
+
+            @keyframes snowOne{
+                0%
+                {
+                    background-position: 0px 0px;
+                }
+                100%
+                {
+                    background-position: 100px 750px;
+                }
+            }
+
+            .snowflake {
+                color: #fff;
+                font-size: 1em;
+                font-family: Arial, sans-serif;
+                text-shadow: 0 0 5px #000;
+            }
+
+            @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%,100%{-webkit-transform:translateX(0);transform:translateX(0)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%,100%{transform:translateX(0)}50%{transform:translateX(80px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}.snowflake:nth-of-type(10){left:25%;-webkit-animation-delay:2s,0s;animation-delay:2s,0s}.snowflake:nth-of-type(11){left:65%;-webkit-animation-delay:4s,2.5s;animation-delay:4s,2.5s}
+
+        </style>
+
+        <script>
+            
+            const year = 2020;
+
+            function init() {
+                var openedDoors = [];
+                if(localStorage.getItem("doors")) {
+                    openedDoors = JSON.parse(localStorage.getItem("doors"));
+                }
+                const calendar = document.getElementById("calendar");
+                for(var i = 1; i < 25; i++) {
+                    const door = document.createElement('div');
+                    door.classList.add('door');
+                    door.setAttribute("id", "door-" + i.toString());
+                    door.addEventListener("click", handleOpenClick, false);
+
+                    const overlay = document.createElement('div');
+                    overlay.classList.add('overlay');
+                    overlay.setAttribute("id", "overlay-" + i.toString());            
+                    
+                    const number = document.createElement('span');
+                    number.classList.add('number');
+                    number.innerHTML = i.toString();
+                    
+                    overlay.appendChild(number);
+
+                    door.appendChild(overlay);
+
+                    const content = document.createElement("div");
+                    content.classList.add("content");
+                    content.setAttribute("id", "content-" + i.toString());
+                    door.appendChild(content);
+
+                    calendar.appendChild(door);
+
+                    if(openedDoors.indexOf(i) > -1) {
+                        door.classList.add("no-animation");
+                        open(door);
+                    }   
+                }
+            }
+            
+            function handleOpenClick() {
+                doOpen(this);
+            }
+
+            function open(e) {
+               doOpen(e);
+            }
+
+            function doOpen(e) {
+                var id = e.getAttribute("id");
+                var day = parseInt(id.split("-")[1]);
+                const today = new Date();
+                if((day <= today.getDate() && today.getMonth() == 11 && today.getFullYear() == year) || today.getFullYear() == year) {
+                    const content = e.childNodes[1];
+                    content.style.backgroundImage = 'url('+data[day-1].download_url+')';
+                    document.getElementById("overlay-" + day).style.zIndex = 100 + day;
+                    
+                    e.classList.add("open");
+
+                    var openedDoors = [];
+                    if(localStorage.getItem("doors")) {
+                        openedDoors = JSON.parse(localStorage.getItem("doors"));
+                    }
+                    openedDoors.push(day);
+                    localStorage.setItem("doors", JSON.stringify(openedDoors));
+
+                }
+                else {
+                    alert('NOT YET');
+                }
+            }
+
+            const data = [{"id":"274","author":"Wojtek Witkowski","width":3824,"height":2520,"url":"https://unsplash.com/photos/h7rOzTmGxWE","download_url":"https://picsum.photos/id/274/3824/2520"},{"id":"275","author":"davide ragusa","width":4288,"height":2848,"url":"https://unsplash.com/photos/ATutAPqj4zw","download_url":"https://picsum.photos/id/275/4288/2848"},{"id":"276","author":"davide ragusa","width":4250,"height":2801,"url":"https://unsplash.com/photos/sM3lniBo2LY","download_url":"https://picsum.photos/id/276/4250/2801"},{"id":"277","author":"Taylor Leopold","width":5616,"height":3744,"url":"https://unsplash.com/photos/pElM4yerF5Q","download_url":"https://picsum.photos/id/277/5616/3744"},{"id":"278","author":"Taylor Leopold","width":5616,"height":3744,"url":"https://unsplash.com/photos/6QQqqvq4R9A","download_url":"https://picsum.photos/id/278/5616/3744"},{"id":"279","author":"Taylor Leopold","width":5616,"height":3744,"url":"https://unsplash.com/photos/OHS0yA7OkrQ","download_url":"https://picsum.photos/id/279/5616/3744"},{"id":"28","author":"Jerry Adney","width":4928,"height":3264,"url":"https://unsplash.com/photos/_WiFMBRT7Aw","download_url":"https://picsum.photos/id/28/4928/3264"},{"id":"280","author":"Jay Wennington","width":5491,"height":3661,"url":"https://unsplash.com/photos/yIDqQ15KgRI","download_url":"https://picsum.photos/id/280/5491/3661"},{"id":"281","author":"Victor Erixon","width":4928,"height":3264,"url":"https://unsplash.com/photos/_poRbNNfcE8","download_url":"https://picsum.photos/id/281/4928/3264"},{"id":"282","author":"Taylor Leopold","width":5616,"height":3744,"url":"https://unsplash.com/photos/9dw0xLlxw1s","download_url":"https://picsum.photos/id/282/5616/3744"},{"id":"283","author":"Wojtek Witkowski","width":3823,"height":2538,"url":"https://unsplash.com/photos/GtxZbYMCiPY","download_url":"https://picsum.photos/id/283/3823/2538"},{"id":"284","author":"Ariana Prestes","width":2048,"height":1365,"url":"https://unsplash.com/photos/MpSnQAUTgcE","download_url":"https://picsum.photos/id/284/2048/1365"},{"id":"287","author":"Aleksandra Boguslawska","width":4288,"height":2848,"url":"https://unsplash.com/photos/c54ZhWDLEDo","download_url":"https://picsum.photos/id/287/4288/2848"},{"id":"288","author":"Stockholm","width":3888,"height":2592,"url":"https://unsplash.com/photos/eVBg7A07NGg","download_url":"https://picsum.photos/id/288/3888/2592"},{"id":"289","author":"Jennifer Langley","width":2800,"height":1508,"url":"https://unsplash.com/photos/vIqxsp0_p1g","download_url":"https://picsum.photos/id/289/2800/1508"},{"id":"29","author":"Go Wild","width":4000,"height":2670,"url":"https://unsplash.com/photos/V0yAek6BgGk","download_url":"https://picsum.photos/id/29/4000/2670"},{"id":"290","author":"Aleksandar Vacić","width":3456,"height":2304,"url":"https://unsplash.com/photos/nAZOGbSWK9o","download_url":"https://picsum.photos/id/290/3456/2304"},{"id":"291","author":"Caleb George","width":3264,"height":2176,"url":"https://unsplash.com/photos/zdjOYZeJj3w","download_url":"https://picsum.photos/id/291/3264/2176"},{"id":"292","author":"Webvilla","width":3852,"height":2556,"url":"https://unsplash.com/photos/hv1MrBzGGNY","download_url":"https://picsum.photos/id/292/3852/2556"},{"id":"293","author":"Paul E. Harrer","width":6000,"height":4000,"url":"https://unsplash.com/photos/AJqHzUbc1io","download_url":"https://picsum.photos/id/293/6000/4000"},{"id":"294","author":"Robin Benad","width":3753,"height":2309,"url":"https://unsplash.com/photos/NKV6xXErcyY","download_url":"https://picsum.photos/id/294/3753/2309"},{"id":"295","author":"Olivia Henry","width":4272,"height":2848,"url":"https://unsplash.com/photos/-_rYK0egLWE","download_url":"https://picsum.photos/id/295/4272/2848"},{"id":"296","author":"Greg Shield","width":3072,"height":2048,"url":"https://unsplash.com/photos/Du30R57aCyM","download_url":"https://picsum.photos/id/296/3072/2048"},{"id":"297","author":"André Robillard","width":5781,"height":3728,"url":"https://unsplash.com/photos/IUwLkxL49co","download_url":"https://picsum.photos/id/297/5781/3728"}];
+
+        </script>
+
+    </head>
+    <body onload="init()">
+        <div id="calendar" class="calendar"></div>
+
+        <div id="snow" class="snowflakes" aria-hidden="true">
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+            ❅
+            </div>
+            <div class="snowflake">
+            ❆
+            </div>
+            <div class="snowflake">
+              ❅
+            </div>
+            <div class="snowflake">
+              ❆
+            </div>
+            <div class="snowflake">
+              ❅
+            </div>
+            <div class="snowflake">
+              ❆
+            </div>
+            <div class="snowflake">
+              ❅
+            </div>
+            <div class="snowflake">
+              ❆
+            </div>
+            
+          </div>
+    </body>
+</html>
